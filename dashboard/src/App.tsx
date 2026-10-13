@@ -1,7 +1,15 @@
 import { useEffect, useMemo, useState } from 'react'
 import { cargarDashboard, TODOS, type Dashboard, type Filtros, type Medida } from './data'
 import { Metodologia } from './components/Metodologia'
+import { Onboarding, onboardingVisto } from './components/Onboarding'
 import { EdadAntiguedad, Evolucion, Provincias, Sectores, TechoCristal, Titular } from './components/Secciones'
+
+/** Personas del último año, redondeado hacia abajo a decenas de mil ("330.000") */
+function personasUltimoAnio(d: Dashboard) {
+  const c = d.datos[`${d.dims.anios[d.dims.anios.length - 1]}|*|*|*`]
+  const n = c ? c.n[0] + c.n[1] : 0
+  return (Math.floor(n / 10_000) * 10_000).toLocaleString('es-EC')
+}
 
 function filtrosIniciales(d: Dashboard): Filtros {
   const q = new URLSearchParams(window.location.search)
@@ -23,12 +31,14 @@ export default function App() {
   const [d, setD] = useState<Dashboard | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [f, setFiltros] = useState<Filtros | null>(null)
+  const [tour, setTour] = useState(false)
 
   useEffect(() => {
     cargarDashboard()
       .then((datos) => {
         setD(datos)
         setFiltros(filtrosIniciales(datos))
+        if (!onboardingVisto()) setTour(true)
       })
       .catch((e: Error) => setError(e.message))
   }, [])
@@ -58,10 +68,14 @@ export default function App() {
           <p className="marca">Actuaria · ACTUAR por la Equidad</p>
           <h1>¿Cuánto ganan y dónde trabajan las mujeres en las empresas del Ecuador?</h1>
           <p className="bajada">
-            Indicadores de equidad de género construidos a partir de{' '}
-            {d ? `${(d.meta.registros / 1e6).toFixed(1).replace('.', ',')} millones de registros laborales de ${d.meta.empresas.toLocaleString('es-EC')} empresas` : 'millones de registros laborales'}{' '}
-            del sector formal, {d ? `${d.dims.anios[0]}–${d.dims.anios[d.dims.anios.length - 1]}` : ''}.
+            Datos de{' '}
+            {d ? `más de ${personasUltimoAnio(d)} trabajadores al año en ${d.meta.empresas.toLocaleString('es-EC')} empresas privadas, ${d.dims.anios[0]}–${d.dims.anios[d.dims.anios.length - 1]}` : 'miles de trabajadores en empresas privadas'}.
           </p>
+          {d && (
+            <button className="btn-hero" onClick={() => setTour(true)}>
+              ¿Cómo leer este tablero?
+            </button>
+          )}
         </div>
       </header>
 
@@ -75,7 +89,7 @@ export default function App() {
 
       {d && f && (
         <>
-          <nav className="filtros" aria-label="Filtros">
+          <nav className="filtros" aria-label="Filtros" id="tour-filtros">
             <div className="wrap">
               <div className="filtro">
                 <label htmlFor="f-anio">Año</label>
@@ -88,7 +102,7 @@ export default function App() {
                 </select>
               </div>
               <div className="filtro">
-                <label htmlFor="f-sector">Sector económico</label>
+                <label htmlFor="f-sector">Sector</label>
                 <select id="f-sector" value={f.sector} onChange={(e) => setF({ sector: e.target.value })}>
                   <option value={TODOS}>Todos los sectores</option>
                   {d.dims.sectores.map((s) => (
@@ -99,7 +113,7 @@ export default function App() {
                 </select>
               </div>
               <div className="filtro">
-                <label htmlFor="f-tamano">Tamaño de empresa</label>
+                <label htmlFor="f-tamano">Tamaño de la empresa</label>
                 <select id="f-tamano" value={f.tamano} onChange={(e) => setF({ tamano: e.target.value })}>
                   <option value={TODOS}>Todos los tamaños</option>
                   {d.dims.tamanos.map((t) => (
@@ -117,11 +131,11 @@ export default function App() {
                 </select>
               </div>
               <div className="filtro" style={{ minWidth: 0 }}>
-                <label id="l-medida">Comparar sueldos con</label>
+                <label id="l-medida">Comparar con</label>
                 <div className="segmentado" role="group" aria-labelledby="l-medida">
                   {(['mediana', 'media'] as Medida[]).map((m) => (
                     <button key={m} aria-pressed={f.medida === m} onClick={() => setF({ medida: m })}>
-                      {m === 'mediana' ? 'Mediana' : 'Promedio'}
+                      {m === 'mediana' ? 'Sueldo típico' : 'Promedio'}
                     </button>
                   ))}
                 </div>
@@ -144,10 +158,13 @@ export default function App() {
             <Metodologia d={d} />
           </main>
 
+          {tour && <Onboarding onCerrar={() => setTour(false)} />}
+
           <footer>
             <div className="wrap">
               <p>
-                Fuente: {d.meta.fuente}. Actualizado el {actualizado}. Elaborado por Actuaria.
+                Fuente: información laboral de empresas privadas del Ecuador y Superintendencia de Compañías. Actualizado el{' '}
+                {actualizado}. Elaborado por Actuaria.
               </p>
             </div>
           </footer>

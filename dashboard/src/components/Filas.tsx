@@ -27,9 +27,9 @@ export function Filas({
   return (
     <div className="filas">
       <div className="filas-head">
-        <span>{onElegir ? 'Clic para filtrar' : ''}</span>
-        <span>Participación (mujeres | hombres)</span>
-        <span>Mujer por cada $100 de un hombre (línea vertical = igualdad)</span>
+        <span>{onElegir ? 'Toca para filtrar' : ''}</span>
+        <span>Mujeres | Hombres</span>
+        <span>Mujer por cada $100 de un hombre (línea = igualdad)</span>
       </div>
       {filas.map((f) => (
         <div

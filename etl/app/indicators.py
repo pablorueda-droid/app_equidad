@@ -152,7 +152,7 @@ def construir_dashboard(df: pd.DataFrame) -> dict:
     meta = {
         "titulo": "ACTUAR por la Equidad",
         "generado": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "fuente": "Estudios actuariales Actuaria (Actuafast) + Superintendencia de Compañías (SCVS)",
+        "fuente": "Información laboral de empresas privadas del Ecuador + Superintendencia de Compañías (SCVS)",
         "registros": int(len(df)),
         "empresas": int(df["rucced"].nunique()),
         "sbu": {str(a): v for a, v in config.SBU_POR_ANIO.items() if a in dims["anios"]},
