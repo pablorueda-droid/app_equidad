@@ -75,7 +75,13 @@ def _sql(anio_final: int) -> str:
 def extraer_base(anio_final: int) -> pd.DataFrame:
     client = bigquery.Client(project=config.BQ_PROJECT)
     print(f"Consultando BigQuery {config.VIEW_ESTUDIOS} ({config.ANIO_INICIAL}-{anio_final}) ...")
-    df = client.query(_sql(anio_final)).to_dataframe(create_bqstorage_client=True)
+    job = client.query(_sql(anio_final))
+    job.result()
+    try:
+        df = job.to_dataframe(create_bqstorage_client=True)
+    except Exception as e:  # sin permiso bigquery.readSessionUser -> descarga por REST (más lenta)
+        print(f"  BigQuery Storage API no disponible ({type(e).__name__}); se usa REST")
+        df = job.to_dataframe(create_bqstorage_client=False)
     print(f"  Filas extraídas (ya filtradas por calidad): {len(df):,}")
     return df
 

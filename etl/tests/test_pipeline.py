@@ -78,7 +78,7 @@ def test_api_dashboard(tmp_path, monkeypatch):
     from app import main
     main._cache.update(datos=None, ts=0.0)
     c = TestClient(main.app)
-    assert c.get("/healthz").json() == {"status": "ok"}
+    assert c.get("/health").json() == {"status": "ok"}
     r = c.get("/api/dashboard")
     assert r.status_code == 200 and "2025|*|*|*" in r.json()["datos"]
     assert c.post("/etl/run", headers={"X-ETL-Token": "malo"}).status_code == 403

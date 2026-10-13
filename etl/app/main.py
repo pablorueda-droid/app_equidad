@@ -1,7 +1,7 @@
 """Microservicio ETL ACTUAR por la Equidad (Cloud Run).
 
 Endpoints:
-  GET  /healthz           estado del servicio
+  GET  /health            estado del servicio (/healthz está reservado en Cloud Run)
   GET  /api/dashboard     JSON público de indicadores (lo consume el dashboard React)
   POST /etl/run           ejecuta el ETL completo (requiere cabecera X-ETL-Token)
   GET  /                  dashboard React compilado (si existe STATIC_DIR)
@@ -29,7 +29,7 @@ _cache: dict = {"datos": None, "ts": 0.0}
 _etl_lock = threading.Lock()
 
 
-@app.get("/healthz")
+@app.get("/health")
 def healthz():
     return {"status": "ok"}
 

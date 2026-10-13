@@ -15,7 +15,7 @@ etl/          Microservicio FastAPI (Cloud Run, proyecto act-automations-stage)
     indicators.py   precalcula indicadores para todas las combinaciones de filtros -> JSON público
     storage.py      escritura local o gs://
     pipeline.py     orquestación
-    main.py         GET /healthz, GET /api/dashboard, POST /etl/run (cabecera X-ETL-Token)
+    main.py         GET /health, GET /api/dashboard, POST /etl/run (cabecera X-ETL-Token)
   run_local.py      ejecución local (con --guardar-extraccion / --desde-parquet para no repetir BigQuery)
   deploy/deploy.sh  despliegue Cloud Run + bucket + secreto + Cloud Scheduler
 dashboard/    React + Vite + TypeScript; consume /api/dashboard (VITE_DATA_URL)

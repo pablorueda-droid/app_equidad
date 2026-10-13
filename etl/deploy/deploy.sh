@@ -12,7 +12,8 @@ BQ_DATASET="${BQ_DATASET:-actuafastv2}"
 REGION="${REGION:-us-central1}"
 SERVICE="${SERVICE:-equidad-etl}"
 BUCKET="${BUCKET:-${PROJECT}-equidad}"
-SA_NAME="${SA_NAME:-equidad-etl}"
+# Cuenta con lectura de BigQuery ya otorgada en act-actuafast (compartida con backend-actuafast)
+SA_NAME="${SA_NAME:-sa-backend-actuafast}"
 SA="${SA_NAME}@${PROJECT}.iam.gserviceaccount.com"
 SECRET="${SECRET:-equidad-etl-token}"
 CORS_ORIGINS="${CORS_ORIGINS:-*}"
@@ -31,9 +32,9 @@ if [[ "${PRIMERA_VEZ:-0}" == "1" ]]; then
   gcloud storage buckets add-iam-policy-binding "gs://${BUCKET}" \
     --member "serviceAccount:${SA}" --role roles/storage.objectAdmin
 
-  # Lectura de BigQuery en act-actuafast
+  # Lectura de BigQuery en act-actuafast (requiere ser admin allí; si no, debe otorgarlo quien lo sea)
   for ROLE in roles/bigquery.jobUser roles/bigquery.readSessionUser roles/bigquery.dataViewer; do
-    gcloud projects add-iam-policy-binding "$BQ_PROJECT" --member "serviceAccount:${SA}" --role "$ROLE" --condition=None
+    gcloud projects add-iam-policy-binding "$BQ_PROJECT" --member "serviceAccount:${SA}" --role "$ROLE"       --condition=None >/dev/null 2>&1 || echo "AVISO: no se pudo otorgar $ROLE en $BQ_PROJECT (se asume ya otorgado)"
   done
 
   # Token para disparar el ETL
