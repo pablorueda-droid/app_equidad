@@ -1,0 +1,9 @@
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pandas==2.2.3
+numpy==2.2.6
+pyarrow==23.0.0
+google-cloud-bigquery==3.40.1
+google-cloud-bigquery-storage>=2.30
+google-cloud-storage==2.19.0
+db-dtypes==1.5.0

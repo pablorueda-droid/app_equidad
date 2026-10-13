@@ -1,0 +1,23 @@
+# Archivos históricos, datos y binarios (no se versionan: contienen microdatos/RUCs)
+_archivo/
+*.parquet
+*.pbix
+*.xlsx
+*.csv
+*.pptx
+*.docx
+*.pdf
+out/
+
+# Entorno
+.idea/
+.vscode/
+.venv/
+__pycache__/
+.pytest_cache/
+.env
+*.env.local
+
+# Frontend
+node_modules/
+dist/
