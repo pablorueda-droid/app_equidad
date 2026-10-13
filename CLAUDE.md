@@ -39,7 +39,7 @@ npm run dev        # usa public/dashboard.json si VITE_DATA_URL no está definid
 npm run build
 ```
 
-## Reglas de negocio (no cambiar sin revisar docs/metodologia.md)
+## Reglas de negocio (no cambiar sin revisar docs/metricas.md)
 
 1. Filtros: versión final del estudio, tipo de empresa ∈ {2,3,4}, sexo M/F, edad 18–100, antigüedad ≥ 0, cargos sin "JUBILAD/JUBILACION/JUBILAR", remuneración ≥ SBU del año. **`SBU_POR_ANIO` en config.py debe actualizarse cada año**; los años sin SBU no se procesan.
 2. Sector = CIIU nivel 1 más reciente del RUC en SCVS; se excluyen sectores con ≤ 30 RUCs.

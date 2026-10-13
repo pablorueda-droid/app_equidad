@@ -1,6 +1,0 @@
-out/
-tests/
-__pycache__/
-*.parquet
-.pytest_cache/
-.venv/

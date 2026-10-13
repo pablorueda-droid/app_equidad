@@ -21,3 +21,6 @@ __pycache__/
 # Frontend
 node_modules/
 dist/
+
+# Datos de ejemplo del dashboard (se generan con el ETL)
+dashboard/public/dashboard.json

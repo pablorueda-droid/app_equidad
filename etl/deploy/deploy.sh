@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 # Despliegue del microservicio ETL en Cloud Run (proyecto act-automations-stage).
 # Requiere: gcloud autenticado (gcloud auth login) con permisos de admin en ambos proyectos.
-# Uso:  bash deploy/deploy.sh            (desde la carpeta etl/)
-#       PRIMERA_VEZ=1 bash deploy/deploy.sh   (crea bucket, cuenta de servicio, secreto, permisos y scheduler)
+# Uso:  bash etl/deploy/deploy.sh            (desde la raíz del repositorio; usa el Dockerfile raíz)
+#       PRIMERA_VEZ=1 bash etl/deploy/deploy.sh   (crea bucket, cuenta de servicio, secreto, permisos y scheduler)
 set -euo pipefail
+cd "$(dirname "$0")/../.."
 
 PROJECT="${PROJECT:-act-automations-stage}"
 BQ_PROJECT="${BQ_PROJECT:-act-actuafast}"

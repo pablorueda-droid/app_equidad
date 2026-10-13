@@ -1,0 +1,12 @@
+_archivo/
+.git/
+.idea/
+.claude/
+**/node_modules/
+**/dist/
+**/__pycache__/
+**/.pytest_cache/
+**/out/
+**/*.parquet
+dashboard/public/dashboard.json
+etl/tests/

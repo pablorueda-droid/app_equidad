@@ -4,8 +4,10 @@ Endpoints:
   GET  /healthz           estado del servicio
   GET  /api/dashboard     JSON público de indicadores (lo consume el dashboard React)
   POST /etl/run           ejecuta el ETL completo (requiere cabecera X-ETL-Token)
+  GET  /                  dashboard React compilado (si existe STATIC_DIR)
 """
 
+import os
 import secrets
 import threading
 import time
@@ -14,6 +16,7 @@ from fastapi import FastAPI, Header, HTTPException, Response
 from fastapi.concurrency import run_in_threadpool
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from . import config, pipeline, storage
 
@@ -57,3 +60,9 @@ async def etl_run(x_etl_token: str = Header(default="")):
         _etl_lock.release()
     _cache.update(datos=None, ts=0.0)
     return resumen
+
+
+# El dashboard se monta al final para que no tape las rutas de la API
+_static = os.getenv("STATIC_DIR", "")
+if _static and os.path.isdir(_static):
+    app.mount("/", StaticFiles(directory=_static, html=True), name="dashboard")
