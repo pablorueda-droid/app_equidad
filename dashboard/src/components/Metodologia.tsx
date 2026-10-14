@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { fmt, type Dashboard } from '../data'
+import { EncabezadoSeccion } from './EncabezadoSeccion'
 
 function Pregunta({ q, children }: { q: string; children: ReactNode }) {
   return (
@@ -15,7 +16,7 @@ export function Metodologia({ d }: { d: Dashboard }) {
   const anios = `${d.dims.anios[0]} a ${d.dims.anios[d.dims.anios.length - 1]}`
   return (
     <section className="seccion" id="metodologia">
-      <h2>Preguntas frecuentes</h2>
+      <EncabezadoSeccion num="?">Preguntas frecuentes</EncabezadoSeccion>
       <div className="faqs">
         <Pregunta q="¿De dónde salen estos datos?">
           De la información laboral de {fmt.n(d.meta.empresas)} empresas privadas del Ecuador entre {anios}, con datos de la

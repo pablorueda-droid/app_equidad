@@ -12,6 +12,7 @@ import {
   type Filtros,
 } from '../data'
 import { Ayuda, ChartCard, Leyenda, Vacio } from './ChartCard'
+import { EncabezadoSeccion } from './EncabezadoSeccion'
 import { C, Columnas, Lineas, Piramide } from './charts'
 import { Filas, type FilaDato } from './Filas'
 
@@ -203,7 +204,7 @@ export function Evolucion({ d, f }: P) {
 
   return (
     <section className="seccion" id="tour-explora">
-      <h2>¿Ha mejorado con los años?</h2>
+      <EncabezadoSeccion num="01">¿Ha mejorado con los años?</EncabezadoSeccion>
       <div className="grid2">
         <ChartCard
           titulo="Cuántas mujeres trabajan"
@@ -301,7 +302,7 @@ export function TechoCristal({ d, f, setF }: P) {
 
   return (
     <section className="seccion">
-      <h2>¿Llegan las mujeres a los puestos más altos?</h2>
+      <EncabezadoSeccion num="02">¿Llegan las mujeres a los puestos más altos?</EncabezadoSeccion>
       <div className="grid2">
         <ChartCard
           titulo="Según el nivel del cargo"
@@ -413,7 +414,7 @@ export function Sectores({ d, f, setF }: P) {
 
   return (
     <section className="seccion">
-      <h2>¿En qué sectores y empresas hay más igualdad?</h2>
+      <EncabezadoSeccion num="03">¿En qué sectores y empresas hay más igualdad?</EncabezadoSeccion>
       <div className="grid1">
         <ChartCard
           titulo="Por actividad de la empresa"
@@ -547,7 +548,7 @@ export function EdadAntiguedad({ d, f }: P) {
 
   return (
     <section className="seccion">
-      <h2>¿Cambia con la edad y los años de trabajo?</h2>
+      <EncabezadoSeccion num="04">¿Cambia con la edad y los años de trabajo?</EncabezadoSeccion>
       <div className="grid2">
         <ChartCard
           titulo="Edad de quienes trabajan"
@@ -623,7 +624,7 @@ export function Provincias({ d, f }: P) {
 
   return (
     <section className="seccion">
-      <h2>¿Y en cada provincia?</h2>
+      <EncabezadoSeccion num="05">¿Y en cada provincia?</EncabezadoSeccion>
       <div className="grid1">
         <ChartCard
           titulo="Por provincia de la empresa"
