@@ -11,20 +11,38 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
+import { useState } from 'react'
+import { C } from '../colores'
 import { fmt } from '../data'
+import { escala, marcas } from '../escala'
 
-export const C = {
-  mujer: 'var(--mujer)',
-  hombre: 'var(--hombre)',
-  neutral: 'var(--neutral)',
-  accent: 'var(--accent)',
-}
-
+// Ejes: Bricolage 12px en texto terciario (la familia se fija en index.css, .recharts-cartesian-axis-tick-value)
 const ejeProps = {
   stroke: 'var(--axis)',
   tick: { fill: 'var(--text-muted)', fontSize: 12 },
   tickLine: false,
 } as const
+
+/** Etiqueta del eje X partida en líneas para que quepa en su banda (columnas con nombres largos) */
+function TickMultilinea({ x, y, payload, ancho }: { x?: number | string; y?: number | string; payload?: { value?: unknown }; ancho: number }) {
+  const palabras = String(payload?.value ?? '').split(' ')
+  const maxCar = Math.max(6, Math.floor(ancho / 7))
+  const lineas: string[] = []
+  for (const p of palabras) {
+    const ultima = lineas[lineas.length - 1]
+    if (ultima && (ultima + ' ' + p).length <= maxCar) lineas[lineas.length - 1] = `${ultima} ${p}`
+    else lineas.push(p)
+  }
+  return (
+    <text x={x} y={y} textAnchor="middle" fill="var(--text-muted)" fontSize={12} className="recharts-cartesian-axis-tick-value">
+      {lineas.map((l, i) => (
+        <tspan key={i} x={x} dy={i === 0 ? 12 : 15}>
+          {l}
+        </tspan>
+      ))}
+    </text>
+  )
+}
 
 export interface Serie {
   key: string
@@ -80,16 +98,26 @@ export function Lineas({
   formato: (v: number | null) => string
   formatoEje?: (v: number) => string
   referencia?: { y: number; etiqueta: string }
-  dominio?: [number | 'auto' | 'dataMin' | 'dataMax', number | 'auto' | 'dataMin' | 'dataMax']
+  dominio?: [number, number]
   alto?: number
 }) {
   const ultimo = datos.length - 1
+  const valores = datos.flatMap((r) => series.map((s) => r[s.key])).filter((v): v is number => typeof v === 'number')
+  const esc = escala(valores, dominio)
   return (
     <ResponsiveContainer width="100%" height={alto}>
       <LineChart data={datos} margin={{ top: 12, right: 56, bottom: 4, left: 0 }}>
         <CartesianGrid vertical={false} stroke="var(--grid)" />
-        <XAxis dataKey={x} {...ejeProps} interval="preserveStartEnd" padding={{ left: 12, right: 12 }} />
-        <YAxis {...ejeProps} axisLine={false} width={56} domain={dominio ?? ['auto', 'auto']} tickFormatter={formatoEje} />
+        <XAxis dataKey={x} {...ejeProps} interval="preserveStartEnd" minTickGap={10} padding={{ left: 12, right: 12 }} />
+        <YAxis
+          {...ejeProps}
+          axisLine={false}
+          width={56}
+          domain={esc.dominio}
+          ticks={esc.marcas}
+          interval={0}
+          tickFormatter={formatoEje}
+        />
         {referencia && (
           <ReferenceLine
             y={referencia.y}
@@ -161,12 +189,23 @@ export function Columnas({
   dominio?: [number, number]
   alto?: number
 }) {
+  // Ancho aproximado de cada banda para partir las etiquetas largas (se recalcula al redimensionar)
+  const [ancho, setAncho] = useState(480)
+  const banda = Math.max(40, (ancho - 48 - 72) / Math.max(1, datos.length))
   return (
-    <ResponsiveContainer width="100%" height={alto}>
+    <ResponsiveContainer width="100%" height={alto + 18} onResize={(w) => setAncho(w)}>
       <BarChart data={datos} margin={{ top: 22, right: 72, bottom: 4, left: 0 }} barCategoryGap="30%">
         <CartesianGrid vertical={false} stroke="var(--grid)" />
-        <XAxis dataKey={x} {...ejeProps} />
-        <YAxis {...ejeProps} axisLine={false} width={48} domain={dominio} tickFormatter={(v) => `${v} %`} />
+        <XAxis dataKey={x} {...ejeProps} interval={0} height={48} tick={(p) => <TickMultilinea {...p} ancho={banda} />} />
+        <YAxis
+          {...ejeProps}
+          axisLine={false}
+          width={48}
+          domain={dominio}
+          ticks={dominio ? marcas(dominio[0], dominio[1]) : undefined}
+          interval={0}
+          tickFormatter={(v) => `${v} %`}
+        />
         <Tooltip
           cursor={{ fill: 'var(--surface-2)' }}
           content={(p) => (
@@ -184,7 +223,7 @@ export function Columnas({
             dataKey={y}
             position="top"
             formatter={(v: unknown) => formato(v as number)}
-            style={{ fill: 'var(--text-secondary)', fontSize: 12, fontWeight: 600 }}
+            style={{ fill: 'var(--text-secondary)', fontSize: 12, fontWeight: 600, stroke: 'var(--surface-1)', strokeWidth: 3, paintOrder: 'stroke' }}
           />
         </Bar>
         {referencia && (
@@ -211,10 +250,10 @@ export function BarraParticipacion({ pctM, alto = 26 }: { pctM: number | null; a
       role="img"
       aria-label={`Mujeres ${fmt.pct(pctM)}, hombres ${fmt.pct(pctH)}`}
     >
-      <div style={{ width: `${pctM}%`, background: C.mujer, borderRadius: '4px 0 0 4px', ...celdaTexto }}>
+      <div style={{ width: `${pctM}%`, background: C.mujer, color: 'var(--on-mujer)', borderRadius: '4px 0 0 4px', ...celdaTexto }}>
         {cabe(pctM) && `${Math.round(pctM)} %`}
       </div>
-      <div style={{ width: `${pctH}%`, background: C.hombre, borderRadius: '0 4px 4px 0', ...celdaTexto }}>
+      <div style={{ width: `${pctH}%`, background: C.hombre, color: 'var(--on-hombre)', borderRadius: '0 4px 4px 0', ...celdaTexto }}>
         {cabe(pctH) && `${Math.round(pctH)} %`}
       </div>
     </div>
@@ -222,7 +261,6 @@ export function BarraParticipacion({ pctM, alto = 26 }: { pctM: number | null; a
 }
 
 const celdaTexto = {
-  color: '#fff',
   fontSize: 12,
   fontWeight: 600,
   display: 'flex',

@@ -597,6 +597,13 @@ table.datos th {
   overflow: auto;
 }
 
+/* Ejes de Recharts: Bricolage 12px, números alineados */
+.recharts-cartesian-axis-tick-value {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
 /* Tooltip */
 .tt {
   background: var(--surface-1);

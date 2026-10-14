@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
-import { C } from './charts'
+import { C } from '../colores'
 
 const CLAVE = 'equidad-onboarding-v1'
 

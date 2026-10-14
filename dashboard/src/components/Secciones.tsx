@@ -13,7 +13,8 @@ import {
 } from '../data'
 import { Ayuda, ChartCard, Leyenda, Vacio } from './ChartCard'
 import { EncabezadoSeccion } from './EncabezadoSeccion'
-import { C, Columnas, Lineas, Piramide } from './charts'
+import { C } from '../colores'
+import { Columnas, Lineas, Piramide } from './charts'
 import { Filas, type FilaDato } from './Filas'
 
 interface P {
@@ -311,7 +312,7 @@ export function TechoCristal({ d, f, setF }: P) {
           ayuda={
             <>
               <B>Operativo:</B> asistentes, técnicos, operarios. <B>Táctico:</B> jefaturas y supervisión.{' '}
-              <B>Estratégico:</B> gerencias y direcciones. La barra muestra cuántas mujeres (violeta) y hombres (verde) hay;
+              <B>Estratégico:</B> gerencias y direcciones. La barra muestra cuántas personas hay, en morado (mujeres) y en lila (hombres);
               el punto, cuánto gana una mujer por cada $100 de un hombre.
             </>
           }
@@ -420,7 +421,7 @@ export function Sectores({ d, f, setF }: P) {
           titulo="Por actividad de la empresa"
           sub="Toca un sector para ver todo el tablero solo con ese sector"
           lectura={lecturaSector}
-          ayuda="La barra muestra cuántas mujeres (violeta) y hombres (verde) trabajan en cada sector. El punto muestra cuánto gana una mujer por cada $100 de un hombre: a la izquierda de la línea, ganan menos; a la derecha, más. Está ordenado de mayor a menor diferencia."
+          ayuda="La barra muestra cuántas personas trabajan en cada sector, en morado (mujeres) y en lila (hombres). El punto muestra cuánto gana una mujer por cada $100 de un hombre: a la izquierda de la línea, ganan menos; a la derecha, más. Está ordenado de mayor a menor diferencia."
           leyenda={<LeyendaFilas />}
           tabla={tabla(filas, 'Sector')}
         >
