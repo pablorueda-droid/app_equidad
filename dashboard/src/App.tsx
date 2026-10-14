@@ -242,11 +242,17 @@ export default function App() {
 
           {tour && <Onboarding onCerrar={() => setTour(false)} />}
 
-          <footer>
-            <div className="wrap">
-              <p>
+          <footer className="pie">
+            <div className="wrap pie-wrap">
+              <div className="pie-marca">
+                <p className="pie-titulo">
+                  ACTUAR por la <em>Equidad</em>
+                </p>
+                <p>Elaborado por Actuaria</p>
+              </div>
+              <p className="pie-fuente">
                 Fuente: información laboral de empresas privadas del Ecuador y Superintendencia de Compañías. Actualizado el{' '}
-                {actualizado}. Elaborado por Actuaria.
+                {actualizado}.
               </p>
             </div>
           </footer>

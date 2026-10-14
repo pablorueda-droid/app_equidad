@@ -686,12 +686,40 @@ table.datos th {
   }
 }
 
-footer {
-  margin-top: 48px;
-  padding: 24px 0 40px;
-  border-top: 1px solid var(--border);
-  color: var(--text-muted);
+/* Pie */
+.pie {
+  margin-top: 72px;
+  background: var(--hero-bg);
+  color: var(--hero-soft);
+}
+.pie-wrap {
+  padding-top: 44px;
+  padding-bottom: 48px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+}
+.pie-marca {
+  display: grid;
+  gap: 8px;
+  font-size: 14px;
+}
+.pie-titulo {
+  font-family: var(--font-serif);
+  font-size: 34px;
+  line-height: 1;
+  color: var(--hero-ink);
+}
+.pie-titulo em {
+  font-style: italic;
+  color: var(--igualdad);
+}
+.pie-fuente {
   font-size: 13px;
+  max-width: 560px;
+  text-wrap: pretty;
 }
 
 .cargando {
