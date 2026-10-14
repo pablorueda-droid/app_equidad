@@ -6,6 +6,19 @@
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 
+# gcloud necesita Python. Si este shell no tiene "python" en el PATH (p. ej. Git Bash abierto desde
+# PowerShell), se usa el Python que trae el propio Cloud SDK.
+if [[ -z "${CLOUDSDK_PYTHON:-}" ]] && ! command -v python >/dev/null 2>&1; then
+  SDK_BIN="$(dirname "$(command -v gcloud)")"
+  for CAND in "$SDK_BIN/../platform/bundledpython/python.exe" "$SDK_BIN/../platform/bundledpython/bin/python3"; do
+    if [[ -x "$CAND" ]]; then
+      export CLOUDSDK_PYTHON="$CAND"
+      break
+    fi
+  done
+fi
+PYTHON_BIN="${CLOUDSDK_PYTHON:-python}"
+
 PROJECT="${PROJECT:-act-automations-stage}"
 BQ_PROJECT="${BQ_PROJECT:-act-actuafast}"
 BQ_DATASET="${BQ_DATASET:-actuafastv2}"
@@ -39,7 +52,7 @@ if [[ "${PRIMERA_VEZ:-0}" == "1" ]]; then
 
   # Token para disparar el ETL
   if ! gcloud secrets describe "$SECRET" --project "$PROJECT" >/dev/null 2>&1; then
-    python -c "import secrets; print(secrets.token_urlsafe(32), end='')" | \
+    "$PYTHON_BIN" -c "import secrets; print(secrets.token_urlsafe(32), end='')" | \
       gcloud secrets create "$SECRET" --project "$PROJECT" --data-file=-
   fi
   gcloud secrets add-iam-policy-binding "$SECRET" --project "$PROJECT" \
