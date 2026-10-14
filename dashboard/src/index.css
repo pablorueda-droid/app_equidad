@@ -34,7 +34,9 @@
   --radius: 6px;
   --radius-ctl: 4px;
   --shadow: none;
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'Bricolage Grotesque', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  font-family: var(--font-sans);
   font-size: 16px;
   line-height: 1.5;
   color: var(--text-primary);
@@ -115,10 +117,12 @@ select {
   font-weight: 600;
 }
 .hero h1 {
-  font-size: clamp(28px, 4vw, 40px);
-  font-weight: 700;
-  margin-top: 6px;
-  line-height: 1.15;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(40px, 5.4vw, 70px);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
 }
 .hero .bajada {
   color: var(--hero-soft);
@@ -227,9 +231,10 @@ select {
   flex-wrap: wrap;
 }
 .headline .valor {
-  font-size: 64px;
-  font-weight: 700;
-  line-height: 1;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 88px;
+  line-height: 0.9;
   color: var(--text-primary);
 }
 .headline .frase {
@@ -259,9 +264,11 @@ select {
   color: var(--text-secondary);
 }
 .kpi .value {
-  font-size: 28px;
-  font-weight: 650;
-  margin-top: 2px;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 34px;
+  line-height: 1.05;
+  margin-top: 6px;
 }
 .kpi .delta {
   font-size: 13px;
@@ -272,9 +279,13 @@ select {
 .seccion {
   margin-top: 40px;
 }
-.seccion > h2 {
-  font-size: 24px;
-  font-weight: 700;
+.seccion h2 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(28px, 3.4vw, 40px);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
 }
 .seccion > .intro {
   color: var(--text-secondary);
@@ -297,8 +308,9 @@ select {
 }
 
 .chart-card h3 {
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 650;
+  letter-spacing: -0.005em;
 }
 .chart-card .sub {
   font-size: 14px;
@@ -513,10 +525,10 @@ footer {
     width: 100%;
   }
   .headline .valor {
-    font-size: 52px;
+    font-size: 64px;
   }
   .kpi .value {
-    font-size: 20px;
+    font-size: 26px;
   }
 }
 
@@ -580,9 +592,9 @@ footer {
   display: block;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--lectura-t);
   margin-bottom: 2px;
 }
 .lectura strong {
@@ -731,14 +743,17 @@ footer {
 }
 .tour-paso {
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--accent);
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.12em;
 }
 .tour h2 {
-  font-size: 21px;
-  margin-top: 4px;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 1.1;
+  margin-top: 6px;
 }
 .tour-texto {
   color: var(--text-secondary);
