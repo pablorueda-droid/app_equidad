@@ -1,25 +1,39 @@
+/* Paleta morado/lila (diseño v3). Contrastes verificados en claro y oscuro (texto >= 4.5:1). */
 :root {
   color-scheme: light;
-  --page: #f6f5f2;
-  --surface-1: #fcfcfb;
-  --surface-2: #f0efec;
-  --text-primary: #0b0b0b;
-  --text-secondary: #52514e;
-  --text-muted: #6f6d68;
-  --grid: #e1e0d9;
-  --axis: #c3c2b7;
-  --border: rgba(11, 11, 11, 0.1);
-  --mujer: #6a3fc9;
-  --hombre: #1a9e8c;
-  --mujer-wash: rgba(106, 63, 201, 0.1);
-  --neutral: #898781;
-  --accent: #4b2a9a;
-  --hero-bg: #2d1b5e;
-  --hero-ink: #ffffff;
-  --hero-soft: #d9cff5;
-  --focus: #2a78d6;
-  --radius: 14px;
-  --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.04);
+  --page: #f6f2fa;
+  --surface-1: #fdfbff;
+  --surface-2: #f1eafa;
+  --text-primary: #1e1530;
+  --text-secondary: #5b5368;
+  --text-muted: #6f6779;
+  --grid: #e7dff2;
+  --axis: #c9bcdf;
+  --border: #e4daf1;
+  --border-faq: #dacfea;
+  --rule: #1e1530; /* línea superior de las secciones */
+  --mujer: #6b2fb3;
+  --hombre: #bba0e6; /* solo relleno: nunca como color de texto sobre fondo claro */
+  --on-mujer: #ffffff;
+  --on-hombre: #2a0f45;
+  --mujer-wash: rgba(107, 47, 179, 0.08); /* fondo de "Lo que nos dice" */
+  --lectura-t: #6b2fb3;
+  --neutral: #a497bf;
+  --accent: #2a0f45; /* morado profundo: enlaces, botones, punto de brecha */
+  --on-accent: #ffffff;
+  --sec-num: #8b55d6;
+  --hero-bg: #2a0f45;
+  --hero-deep: #22093c;
+  --hero-ink: #fff8ec;
+  --hero-soft: #d9cbea;
+  --hero-mujer: #a774f2;
+  --hero-hombre: #e2d3fa;
+  --igualdad: #d9b8ff;
+  --focus: #6b2fb3;
+  --foco-tour: 0 0 0 4px #d9b8ff, 0 0 0 9999px rgba(30, 10, 50, 0.35);
+  --radius: 6px;
+  --radius-ctl: 4px;
+  --shadow: none;
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   font-size: 16px;
   line-height: 1.5;
@@ -28,23 +42,34 @@
   -webkit-font-smoothing: antialiased;
 }
 
+/* Variante oscura: misma familia de morados, pasos aclarados para el fondo oscuro */
 @media (prefers-color-scheme: dark) {
   :root:where(:not([data-theme='light'])) {
     color-scheme: dark;
-    --page: #0d0d0d;
-    --surface-1: #1a1a19;
-    --surface-2: #262624;
-    --text-primary: #ffffff;
-    --text-secondary: #c3c2b7;
-    --text-muted: #a3a29b;
-    --grid: #2c2c2a;
-    --axis: #383835;
-    --border: rgba(255, 255, 255, 0.1);
-    --mujer: #9b7cf0;
-    --hombre: #1fa591;
-    --mujer-wash: rgba(155, 124, 240, 0.14);
-    --accent: #b9a4f5;
-    --hero-bg: #1e1442;
+    --page: #140a20;
+    --surface-1: #1d1230;
+    --surface-2: #2a1c42;
+    --text-primary: #f3edfa;
+    --text-secondary: #cfc3e0;
+    --text-muted: #ada2be;
+    --grid: #2e2244;
+    --axis: #4a3a66;
+    --border: #3a2a55;
+    --border-faq: #3a2a55;
+    --rule: #cfc3e0;
+    --mujer: #a774f2;
+    --hombre: #e2d3fa;
+    --on-mujer: #1d1230;
+    --on-hombre: #2a0f45;
+    --mujer-wash: rgba(167, 116, 242, 0.14);
+    --lectura-t: #c9a6ff;
+    --neutral: #8e80ab;
+    --accent: #d9b8ff;
+    --on-accent: #2a0f45;
+    --sec-num: #b58af0;
+    --hero-bg: #22093c;
+    --hero-deep: #180630;
+    --focus: #d9b8ff;
   }
 }
 
@@ -135,16 +160,16 @@ select {
   background: var(--surface-1)
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23898781' stroke-width='1.5' fill='none'/%3E%3C/svg%3E")
     no-repeat right 10px center;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 7px 30px 7px 10px;
+  border: 1px solid var(--axis);
+  border-radius: var(--radius-ctl);
+  padding: 8px 30px 8px 10px;
   font-size: 14px;
   cursor: pointer;
 }
 .segmentado {
   display: inline-flex;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius-ctl);
   overflow: hidden;
   background: var(--surface-1);
 }
@@ -157,7 +182,7 @@ select {
 }
 .segmentado button[aria-pressed='true'] {
   background: var(--accent);
-  color: #fff;
+  color: var(--on-accent);
   font-weight: 600;
 }
 .btn-link {
@@ -512,7 +537,7 @@ footer {
 }
 .btn-pri,
 .btn-sec {
-  border-radius: 8px;
+  border-radius: var(--radius-ctl);
   padding: 8px 16px;
   font-size: 14px;
   font-weight: 600;
@@ -520,7 +545,7 @@ footer {
 }
 .btn-pri {
   background: var(--accent);
-  color: #fff;
+  color: var(--on-accent);
   border: 1px solid var(--accent);
 }
 .btn-sec {
@@ -542,7 +567,7 @@ footer {
   margin-top: 12px;
   padding: 10px 12px;
   background: var(--mujer-wash);
-  border-radius: 10px;
+  border-radius: var(--radius-ctl);
   font-size: 14px;
   color: var(--text-primary);
 }
@@ -587,7 +612,7 @@ footer {
 .ayuda-btn[aria-expanded='true'] {
   background: var(--accent);
   border-color: var(--accent);
-  color: #fff;
+  color: var(--on-accent);
 }
 .ayuda-pop {
   position: absolute;
@@ -677,7 +702,7 @@ footer {
   position: fixed;
   inset: 0;
   z-index: 50;
-  background: rgba(10, 6, 25, 0.55);
+  background: rgba(30, 10, 50, 0.55);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -693,7 +718,7 @@ footer {
 }
 .tour {
   background: var(--surface-1);
-  border-radius: 18px;
+  border-radius: 8px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   width: min(440px, 100%);
   padding: 24px;
@@ -746,7 +771,7 @@ footer {
   position: relative;
   z-index: 45;
   border-radius: var(--radius);
-  box-shadow: 0 0 0 4px var(--accent), 0 0 0 9999px rgba(10, 6, 25, 0.35);
+  box-shadow: var(--foco-tour);
   transition: box-shadow 0.2s;
   scroll-margin-top: 110px;
 }

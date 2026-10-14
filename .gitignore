@@ -24,3 +24,6 @@ dist/
 
 # Datos de ejemplo del dashboard (se generan con el ETL)
 dashboard/public/dashboard.json
+
+# Prototipos de diseño (referencia local; incluyen fuentes con licencia)
+_diseno/
