@@ -780,16 +780,30 @@ footer {
   display: flex;
   gap: 10px;
   margin-top: 12px;
-  padding: 10px 12px;
+  padding: 12px 14px;
   background: var(--mujer-wash);
   border-radius: var(--radius-ctl);
   font-size: 14px;
   color: var(--text-primary);
 }
 .lectura-ico {
-  color: var(--accent);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
   flex-shrink: 0;
-  margin-top: 1px;
+  margin-top: 5px;
+}
+.lectura-ico i {
+  display: block;
+  width: 16px;
+  height: 3px;
+  border-radius: 1px;
+}
+.lectura-ico-m {
+  background: var(--mujer);
+}
+.lectura-ico-h {
+  background: var(--hombre);
 }
 .lectura-t {
   display: block;

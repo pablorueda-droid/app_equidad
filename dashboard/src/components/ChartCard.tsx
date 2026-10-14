@@ -17,17 +17,6 @@ interface Props {
   children: ReactNode
 }
 
-function descargarCsv(nombre: string, t: Tabla) {
-  const esc = (v: string | number) => `"${String(v).replaceAll('"', '""')}"`
-  const csv = [t.columnas, ...t.filas].map((f) => f.map(esc).join(',')).join('\n')
-  const url = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' }))
-  const a = document.createElement('a')
-  a.href = url
-  a.download = `${nombre.toLowerCase().replace(/[^a-z0-9áéíóúñ]+/gi, '_')}.csv`
-  a.click()
-  URL.revokeObjectURL(url)
-}
-
 export function ChartCard({ titulo, sub, leyenda, lectura, ayuda, tabla, children }: Props) {
   const [verTabla, setVerTabla] = useState(false)
   return (
@@ -44,9 +33,6 @@ export function ChartCard({ titulo, sub, leyenda, lectura, ayuda, tabla, childre
           <div className="acciones">
             <button className="btn-link" onClick={() => setVerTabla((v) => !v)} aria-pressed={verTabla}>
               {verTabla ? 'Ver gráfico' : 'Ver tabla'}
-            </button>
-            <button className="btn-link" onClick={() => descargarCsv(titulo, tabla)} title="Descargar los datos (CSV)">
-              Descargar
             </button>
           </div>
         )}
@@ -83,20 +69,14 @@ export function ChartCard({ titulo, sub, leyenda, lectura, ayuda, tabla, childre
   )
 }
 
-/** Recuadro "Lo que nos dice": la lectura cambia con los filtros */
+/** Recuadro "Lo que nos dice": la lectura cambia con los filtros. El ícono es el mini "=" (mujer / hombre). */
 export function Lectura({ children }: { children: ReactNode }) {
   return (
     <div className="lectura" aria-live="polite">
-      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" className="lectura-ico">
-        <path
-          d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.7.5 1.1 1.3 1.1 2.2h5c0-.9.4-1.7 1.1-2.2A6 6 0 0 0 12 3Z"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
+      <span className="lectura-ico" aria-hidden="true">
+        <i className="lectura-ico-m" />
+        <i className="lectura-ico-h" />
+      </span>
       <div>
         <span className="lectura-t">Lo que nos dice</span>
         <p>{children}</p>
