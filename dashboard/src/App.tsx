@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { cargarDashboard, TODOS, type Dashboard, type Filtros, type Medida } from './data'
+import { cargarDashboard, combo, fmt, pctMujeres, por100, textoBrecha, TODOS, type Dashboard, type Filtros, type Medida } from './data'
 import { Metodologia } from './components/Metodologia'
 import { Onboarding, onboardingVisto } from './components/Onboarding'
 import { EdadAntiguedad, Evolucion, Provincias, Sectores, TechoCristal, Titular } from './components/Secciones'
@@ -25,6 +25,77 @@ function filtrosIniciales(d: Dashboard): Filtros {
     nivel: val('nivel', d.dims.niveles),
     medida: q.get('medida') === 'media' ? 'media' : 'mediana',
   }
+}
+
+/** Gráfico "=": barras Hombre $100 / Mujer $X cruzadas por la línea de igualdad */
+function SignoIgual({ d, f }: { d: Dashboard; f: Filtros }) {
+  const c = combo(d, f)
+  const p = c ? por100(c[f.medida]) : null
+  const max = Math.max(100, p ?? 0) * 1.04
+  const ancho = (v: number) => `${(v / max) * 100}%`
+  const linea = ancho(100)
+  return (
+    <div className="igual">
+      <p className="hero-eyebrow">Por cada $100 que gana un hombre · {f.anio}</p>
+      <div className="igual-barras" role="img" aria-label={`Por cada $100 que gana un hombre, una mujer gana ${fmt.p100(p)}`}>
+        <div className="igual-fila">
+          <span>Hombre</span>
+          <div className="igual-pista">
+            <div className="igual-barra igual-h" style={{ width: linea }} />
+            <i className="igual-linea igual-linea-arriba" style={{ left: linea }} />
+          </div>
+          <b>$100</b>
+        </div>
+        <div className="igual-fila">
+          <span>Mujer</span>
+          <div className="igual-pista">
+            <div className="igual-barra igual-m" style={{ width: ancho(p ?? 0) }} />
+            <i className="igual-linea igual-linea-abajo" style={{ left: linea }} />
+          </div>
+          <b>{fmt.p100(p)}</b>
+        </div>
+      </div>
+      <div className="igual-cifra">
+        <span className="igual-valor">{fmt.p100(p)}</span>
+        <span className="igual-frase">
+          gana una mujer: {textoBrecha(p)} <span className="igual-nota">(la línea lila clara es la igualdad)</span>
+        </span>
+      </div>
+    </div>
+  )
+}
+
+/** Franja de paridad: participación de mujeres frente a la marca de 50 */
+function FranjaParidad({ d, f }: { d: Dashboard; f: Filtros }) {
+  const pm = pctMujeres(combo(d, f))
+  const faltan = pm == null ? '' : pm >= 49.5 ? 'Paridad alcanzada' : `Faltan ${Math.round(50 - pm)} para la paridad`
+  return (
+    <div className="paridad">
+      <div className="wrap paridad-wrap">
+        <p className="paridad-cifra">
+          <span>{pm == null ? '—' : Math.round(pm)}</span>
+          <span>de cada 100 personas trabajadoras son mujeres</span>
+        </p>
+        <div
+          className="paridad-pista"
+          role="img"
+          aria-label={pm == null ? 'Sin datos de participación' : `Mujeres ${fmt.pct(pm)}, hombres ${fmt.pct(100 - pm)}; la paridad es 50 %`}
+        >
+          <span className="paridad-etq">50 · paridad</span>
+          <div className="paridad-barra">
+            <div className="paridad-m" style={{ width: `${pm ?? 0}%` }} />
+            <div className="paridad-h" />
+          </div>
+          <i className="paridad-marca" />
+          <div className="paridad-leyenda" aria-hidden="true">
+            <span>Mujeres</span>
+            <span>Hombres</span>
+          </div>
+        </div>
+        <p className="paridad-faltan">{faltan}</p>
+      </div>
+    </div>
+  )
 }
 
 export default function App() {
@@ -65,18 +136,29 @@ export default function App() {
     <>
       <header className="hero">
         <div className="wrap">
-          <p className="marca">Actuaria · ACTUAR por la Equidad</p>
-          <h1>¿Cuánto ganan y dónde trabajan las mujeres en las empresas del Ecuador?</h1>
-          <p className="bajada">
-            Datos de{' '}
-            {d ? `más de ${personasUltimoAnio(d)} trabajadores al año en ${d.meta.empresas.toLocaleString('es-EC')} empresas privadas, ${d.dims.anios[0]}–${d.dims.anios[d.dims.anios.length - 1]}` : 'miles de trabajadores en empresas privadas'}.
-          </p>
-          {d && (
-            <button className="btn-hero" onClick={() => setTour(true)}>
-              ¿Cómo leer este tablero?
-            </button>
-          )}
+          <div className="hero-top">
+            <p className="marca">ACTUAR por la Equidad</p>
+            <p className="hero-firma">Un tablero de Actuaria</p>
+          </div>
+          <div className="hero-grid">
+            <div>
+              <h1>
+                ¿Cuánto ganan y dónde trabajan <em>las mujeres</em> en las empresas del Ecuador?
+              </h1>
+              <p className="bajada">
+                Datos de{' '}
+                {d ? `más de ${personasUltimoAnio(d)} trabajadores al año en ${d.meta.empresas.toLocaleString('es-EC')} empresas privadas, ${d.dims.anios[0]}–${d.dims.anios[d.dims.anios.length - 1]}` : 'miles de trabajadores en empresas privadas'}.
+              </p>
+              {d && (
+                <button className="btn-hero" onClick={() => setTour(true)}>
+                  ¿Cómo leer este tablero?
+                </button>
+              )}
+            </div>
+            {d && f && <SignoIgual d={d} f={f} />}
+          </div>
         </div>
+        {d && f && <FranjaParidad d={d} f={f} />}
       </header>
 
       {error && (
