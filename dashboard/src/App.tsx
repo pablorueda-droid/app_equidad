@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { cargarDashboard, combo, fmt, pctMujeres, por100, textoBrecha, TODOS, type Dashboard, type Filtros, type Medida } from './data'
 import logoActuaria from './assets/actuaria-blanco.svg'
 import { Metodologia } from './components/Metodologia'
-import { Onboarding, onboardingVisto } from './components/Onboarding'
+import { Onboarding } from './components/Onboarding'
+import { onboardingVisto } from './onboarding'
 import { EdadAntiguedad, Evolucion, Provincias, Sectores, TechoCristal, Titular } from './components/Secciones'
 
 /** Personas del último año, redondeado hacia abajo a decenas de mil ("330.000") */

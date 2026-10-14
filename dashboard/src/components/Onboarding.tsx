@@ -1,15 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { C } from '../colores'
-
-const CLAVE = 'equidad-onboarding-v1'
-
-export function onboardingVisto() {
-  try {
-    return localStorage.getItem(CLAVE) === '1'
-  } catch {
-    return false
-  }
-}
+import { CLAVE_ONBOARDING } from '../onboarding'
 
 interface Paso {
   titulo: string
@@ -63,7 +54,7 @@ export function Onboarding({ onCerrar }: { onCerrar: () => void }) {
 
   const cerrar = () => {
     try {
-      localStorage.setItem(CLAVE, '1')
+      localStorage.setItem(CLAVE_ONBOARDING, '1')
     } catch {
       /* navegación privada: se mostrará de nuevo */
     }
