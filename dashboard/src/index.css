@@ -127,8 +127,21 @@ select {
 }
 .hero-logo {
   display: block;
-  height: 30px;
+  height: 52px;
   width: auto;
+}
+.hero-top .marca {
+  margin-left: auto;
+  text-align: right;
+}
+@media (max-width: 520px) {
+  .hero-logo {
+    height: 30px;
+  }
+  .hero-top .marca {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+  }
 }
 .hero-grid {
   display: grid;

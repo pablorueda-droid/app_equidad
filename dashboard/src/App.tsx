@@ -139,8 +139,8 @@ export default function App() {
       <header className="hero">
         <div className="wrap">
           <div className="hero-top">
-            <p className="marca">ACTUAR por la Equidad</p>
             <img className="hero-logo" src={logoActuaria} alt="Actuaria" width={157} height={38} />
+            <p className="marca">ACTUAR por la Equidad</p>
           </div>
           <div className="hero-grid">
             <div>
