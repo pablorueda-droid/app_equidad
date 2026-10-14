@@ -125,9 +125,10 @@ select {
   text-transform: uppercase;
   color: var(--igualdad);
 }
-.hero-firma {
-  font-size: 13px;
-  color: var(--hero-soft);
+.hero-logo {
+  display: block;
+  height: 30px;
+  width: auto;
 }
 .hero-grid {
   display: grid;

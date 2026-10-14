@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { cargarDashboard, combo, fmt, pctMujeres, por100, textoBrecha, TODOS, type Dashboard, type Filtros, type Medida } from './data'
+import logoActuaria from './assets/actuaria-blanco.svg'
 import { Metodologia } from './components/Metodologia'
 import { Onboarding, onboardingVisto } from './components/Onboarding'
 import { EdadAntiguedad, Evolucion, Provincias, Sectores, TechoCristal, Titular } from './components/Secciones'
@@ -138,7 +139,7 @@ export default function App() {
         <div className="wrap">
           <div className="hero-top">
             <p className="marca">ACTUAR por la Equidad</p>
-            <p className="hero-firma">Un tablero de Actuaria</p>
+            <img className="hero-logo" src={logoActuaria} alt="Actuaria" width={157} height={38} />
           </div>
           <div className="hero-grid">
             <div>
